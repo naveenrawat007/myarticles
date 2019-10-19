@@ -2280,3 +2280,64 @@ Processing by Api::V1::PeopleController#show as */*
 Completed 200 OK in 21ms (Views: 11.3ms | ActiveRecord: 6.8ms | Allocations: 13474)
 
 
+Started GET "/api/v1/people/1" for ::1 at 2019-10-19 11:55:12 +0530
+  [1m[35m (0.5ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by Api::V1::PeopleController#show as */*
+  Parameters: {"name"=>"amit", "gender"=>"male", "id"=>"1", "person"=>{"name"=>"amit", "gender"=>"male"}}
+  [1m[36mPerson Load (0.4ms)[0m  [1m[34mSELECT "people".* FROM "people" WHERE "people"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/api/v1/people_controller.rb:10:in `show'
+[active_model_serializers]   [1m[36mArticle Load (0.2ms)[0m  [1m[34mSELECT "articles".* FROM "articles" WHERE "articles"."person_id" = $1[0m  [["person_id", 1]]
+[active_model_serializers]   ↳ app/serializers/person_serializer.rb:7:in `map'
+[active_model_serializers] Rendered PersonSerializer with ActiveModelSerializers::Adapter::JsonApi (11.17ms)
+Completed 200 OK in 21ms (Views: 12.0ms | ActiveRecord: 5.9ms | Allocations: 13573)
+
+
+Started GET "/api/v1/people/" for ::1 at 2019-10-19 11:55:28 +0530
+Processing by Api::V1::PeopleController#index as */*
+  Parameters: {"name"=>"amit", "gender"=>"male", "person"=>{"name"=>"amit", "gender"=>"male"}}
+  [1m[36mPerson Load (0.3ms)[0m  [1m[34mSELECT "people".* FROM "people"[0m
+  ↳ app/controllers/api/v1/people_controller.rb:6:in `index'
+[active_model_serializers]   [1m[36mArticle Load (0.3ms)[0m  [1m[34mSELECT "articles".* FROM "articles" WHERE "articles"."person_id" = $1[0m  [["person_id", 1]]
+[active_model_serializers]   ↳ app/serializers/person_serializer.rb:7:in `map'
+[active_model_serializers]   [1m[36mArticle Load (0.2ms)[0m  [1m[34mSELECT "articles".* FROM "articles" WHERE "articles"."person_id" = $1[0m  [["person_id", 2]]
+[active_model_serializers]   ↳ app/serializers/person_serializer.rb:7:in `map'
+[active_model_serializers]   [1m[36mArticle Load (0.2ms)[0m  [1m[34mSELECT "articles".* FROM "articles" WHERE "articles"."person_id" = $1[0m  [["person_id", 3]]
+[active_model_serializers]   ↳ app/serializers/person_serializer.rb:7:in `map'
+[active_model_serializers]   [1m[36mArticle Load (0.2ms)[0m  [1m[34mSELECT "articles".* FROM "articles" WHERE "articles"."person_id" = $1[0m  [["person_id", 4]]
+[active_model_serializers]   ↳ app/serializers/person_serializer.rb:7:in `map'
+[active_model_serializers] Rendered ActiveModel::Serializer::CollectionSerializer with ActiveModelSerializers::Adapter::JsonApi (5.21ms)
+Completed 200 OK in 7ms (Views: 5.5ms | ActiveRecord: 1.2ms | Allocations: 4860)
+
+
+Started GET "/api/v1/people/" for ::1 at 2019-10-19 11:57:23 +0530
+Processing by Api::V1::PeopleController#index as */*
+  Parameters: {"name"=>"amit", "gender"=>"male", "person"=>{"name"=>"amit", "gender"=>"male"}}
+  [1m[36mPerson Load (0.3ms)[0m  [1m[34mSELECT "people".* FROM "people"[0m
+  ↳ app/controllers/api/v1/people_controller.rb:6:in `index'
+[active_model_serializers]   [1m[36mArticle Load (0.3ms)[0m  [1m[34mSELECT "articles".* FROM "articles" WHERE "articles"."person_id" = $1[0m  [["person_id", 1]]
+[active_model_serializers]   ↳ app/serializers/person_serializer.rb:7:in `map'
+[active_model_serializers]   [1m[36mArticle Load (0.2ms)[0m  [1m[34mSELECT "articles".* FROM "articles" WHERE "articles"."person_id" = $1[0m  [["person_id", 2]]
+[active_model_serializers]   ↳ app/serializers/person_serializer.rb:7:in `map'
+[active_model_serializers]   [1m[36mArticle Load (0.2ms)[0m  [1m[34mSELECT "articles".* FROM "articles" WHERE "articles"."person_id" = $1[0m  [["person_id", 3]]
+[active_model_serializers]   ↳ app/serializers/person_serializer.rb:7:in `map'
+[active_model_serializers]   [1m[36mArticle Load (0.2ms)[0m  [1m[34mSELECT "articles".* FROM "articles" WHERE "articles"."person_id" = $1[0m  [["person_id", 4]]
+[active_model_serializers]   ↳ app/serializers/person_serializer.rb:7:in `map'
+[active_model_serializers] Rendered ActiveModel::Serializer::CollectionSerializer with ActiveModelSerializers::Adapter::JsonApi (5.24ms)
+Completed 200 OK in 7ms (Views: 5.6ms | ActiveRecord: 1.2ms | Allocations: 4858)
+
+
+Started GET "/api/v1/articles/" for ::1 at 2019-10-19 11:57:39 +0530
+Processing by Api::V1::ArticlesController#index as */*
+  Parameters: {"name"=>"amit", "gender"=>"male", "article"=>{}}
+  [1m[36mArticle Load (0.5ms)[0m  [1m[34mSELECT "articles".* FROM "articles"[0m
+  ↳ app/controllers/api/v1/articles_controller.rb:6:in `index'
+[active_model_serializers]   [1m[36mPerson Load (0.5ms)[0m  [1m[34mSELECT "people".* FROM "people" WHERE "people"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+[active_model_serializers]   ↳ app/serializers/article_serializer.rb:7:in `attributes'
+[active_model_serializers]   [1m[36mPerson Load (0.5ms)[0m  [1m[34mSELECT "people".* FROM "people" WHERE "people"."id" = $1 LIMIT $2[0m  [["id", 2], ["LIMIT", 1]]
+[active_model_serializers]   ↳ app/serializers/article_serializer.rb:7:in `attributes'
+[active_model_serializers]   [1m[36mCACHE Person Load (0.0ms)[0m  [1m[34mSELECT "people".* FROM "people" WHERE "people"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+[active_model_serializers]   ↳ app/serializers/article_serializer.rb:7:in `attributes'
+[active_model_serializers] Rendered ActiveModel::Serializer::CollectionSerializer with ActiveModelSerializers::Adapter::JsonApi (7.42ms)
+Completed 200 OK in 11ms (Views: 8.5ms | ActiveRecord: 1.4ms | Allocations: 4207)
+
+
