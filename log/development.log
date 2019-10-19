@@ -3538,3 +3538,13 @@ Completed 500 Internal Server Error in 1ms (ActiveRecord: 0.0ms | Allocations: 8
 NoMethodError (undefined method `find_by' for Api::V1::User:Module):
   
 app/controllers/api/v1/user/registrations_controller.rb:6:in `create'
+Started POST "/api/v1/users" for ::1 at 2019-10-19 17:07:15 +0530
+Processing by Api::V1::User::RegistrationsController#create as */*
+  Parameters: {"email"=>"naveen123@gmail.com", "password"=>"[FILTERED]", "registration"=>{"email"=>"naveen123@gmail.com", "password"=>"[FILTERED]"}}
+Completed 500 Internal Server Error in 1ms (ActiveRecord: 0.0ms | Allocations: 785)
+
+
+  
+NoMethodError (undefined method `find_by' for Api::V1::User:Module):
+  
+app/controllers/api/v1/user/registrations_controller.rb:6:in `create'
