@@ -2,7 +2,7 @@ module Api
   module V1
     class Users::RegistrationsController < Devise::RegistrationsController
       def create
-        user = User.find_by(email: params[:user][:email])
+        user = User.find_by(email: params[:email])
         if user.present?
           render json: {error: "User already exist with this email",status: 409}
         else
