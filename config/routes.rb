@@ -3,7 +3,7 @@ Rails.application.routes.draw do
     namespace "v1" do
       resources :articles
       resources :people
-      devise_for :users, controllers: { registrations: "api/v1/user/registrations" }
+      devise_for :users, controllers: { registrations: "api/v1/users/registrations" }
     end
   end
 end
