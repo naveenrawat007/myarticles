@@ -1,10 +1,6 @@
 class MainController < ActionController::API
   def authorize_request
     header = request.headers['Authorization']
-    # user = User.find(header)
-    # if user.present?
-    #   render json: { current_user_id: user.id }
-    # end
     header = header.split(' ').last if header
     begin
       @decoded = JWT.decode(header,nil,false)

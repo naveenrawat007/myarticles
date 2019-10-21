@@ -1,6 +1,6 @@
 module Api
   module V1
-    class PeopleController < ApplicationController
+    class PeopleController < MainController
       before_action :authorize_request
       def index
         @people = Person.all
