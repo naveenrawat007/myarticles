@@ -1,6 +1,7 @@
 module Api
   module V1
-    class ArticlesController < ApplicationController
+    class ArticlesController < MainController
+      before_action :authorize_request
       def index
         @articles = Article.all;
         render json: @articles, each_serializer: ArticleSerializer,root: false

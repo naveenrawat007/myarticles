@@ -1,6 +1,7 @@
 module Api
   module V1
     class PeopleController < ApplicationController
+      before_action :authorize_request
       def index
         @people = Person.all
         render json: @people, each_serializer: PersonSerializer,root: false
