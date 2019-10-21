@@ -4,10 +4,12 @@ module Api
       def create
         user = User.find_by(email: params[:user][:email])
         if user.present?
-          render json: {status: "Error",data: user.errors.messages},status: :unprocessable_entity
+          render json: {error: "User already exist with this email",status: 409}
         else
-          user = User.create(signup_params)
-          render json: {status:"Sucsess", data: user}
+          user = User.new(signup_params)
+          if (user.save)
+            render json: {user: UserSerializer.new(user, root: false), message: "SuccessFully saved "}
+          end
         end
       end
 
