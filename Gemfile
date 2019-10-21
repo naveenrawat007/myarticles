@@ -26,6 +26,7 @@ gem 'devise'
 gem 'jwt'
 gem 'sidekiq'
 gem 'redis'
+gem 'rack-cors'
 
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
 # gem 'rack-cors'
