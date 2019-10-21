@@ -8,6 +8,7 @@ module Api
         else
           user = User.new(signup_params)
           if (user.save)
+            Sidekiq::Client.enqueue_to_in("default",Time.now, WelcomeMailWorker, user.email)
             render json: {user: UserSerializer.new(user, root: false), message: "SuccessFully saved "}
           end
         end
