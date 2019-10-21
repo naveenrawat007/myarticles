@@ -4,7 +4,7 @@ module Api
       def create
         user = User.find_by(email: params[:user][:email])
         if user.present?
-          render json: {status: "Error",data: user.errors}
+          render json: {status: "Error",data: user.errors.messages},status: :unprocessable_entity
         else
           user = User.create(signup_params)
           render json: {status:"Sucsess", data: user}
