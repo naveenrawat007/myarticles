@@ -12,7 +12,7 @@ module Api
             Sidekiq::Client.enqueue_to_in("default",Time.now, WelcomeMailWorker, user.email, user.code)
             render json: {user: UserSerializer.new(user, root: false), message: "SuccessFully saved",status: 201}
           else
-            render json: {error: user.errors, message: "not saved"}
+            render json: { message: "User data not saved", status: 404}
           end
         end
       end
@@ -23,7 +23,7 @@ module Api
           user.update(active: true)
           render json: {message: "OTP verified", data: user.id, status: 200}
         else
-          render json: {message: "invalid otp code/expire code", status:404}
+          render json: {message: "invalid OTP code/expired OTP code", status:404}
         end
       end
 
@@ -32,7 +32,15 @@ module Api
         if user.present?
           user.update(code: rand(100000...999999))
           Sidekiq::Client.enqueue_to_in("default", Time.now, WelcomeMailWorker, user.email, user.code)
-          render json: {message: "Resend OTP to your email", status: 201}
+          render json: {message: "Resend OTP to your email", status: 200, data: nil}
+        end
+      end
+
+      def forget_password
+        user = User.find_by(email:params[:email])
+        if user.present?
+          Sidekiq::Client.enqueue_to_in("default", Time.now, ForgetpassWorker, user.email)
+          render json: {message: "forget_password link send to your email", status: 200}
         end
       end
 
