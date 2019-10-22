@@ -44,6 +44,23 @@ module Api
         end
       end
 
+      def update_password
+        user = User.find(params[:id])
+        if user.valid_password?(params[:old_password])
+          user.update(password: params[:new_password])
+          render json: {message: "SuccessFully update password", status: 200, data:nil}
+        else
+          render json: {message: "Invalid email/password", status: 401, data: nil}
+        end
+      end
+
+      def update_profile
+        user = User.find(params[:user][:id])
+        if user.update(signup_params)
+          render json: {message: "SuccessFully Update data", status: 200, data: nil}
+        end
+      end
+
       private
       def signup_params
         params.require(:user).permit(:email, :password, :name, :gender, :date_of_birth)
