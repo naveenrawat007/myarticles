@@ -8,11 +8,26 @@ module Api
         else
           user = User.new(signup_params)
           if (user.save)
-            Sidekiq::Client.enqueue_to_in("default",Time.now, WelcomeMailWorker, user.email)
-            render json: {user: UserSerializer.new(user, root: false), message: "SuccessFully saved",status: 200}
+            user.update(code: rand(100000...999999))
+            Sidekiq::Client.enqueue_to_in("default",Time.now, WelcomeMailWorker, user.email, user.code)
+            render json: {user: UserSerializer.new(user, root: false), message: "SuccessFully saved",status: 201}
           else
             render json: {error: user.errors, message: "not saved"}
           end
+        end
+      end
+
+      def verify_otp
+        user = User.find_by(id:params[:user][:id])
+        if (user.present?)
+          if (user.code == params[:user][:code].to_i)
+            user.update(active: true)
+            render json: {message: "OTP verified", data: user.id, status: 200}
+          else
+            render json: {message: "invalid otp code", status:404}
+          end
+        else
+          render json: {message: "Cannot find user", status: 404}
         end
       end
 
