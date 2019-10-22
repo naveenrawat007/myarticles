@@ -7,7 +7,7 @@ module Api
           token = JWT.encode({user_id: @user.id}, 'HS512')
           render json: {token: token, user_id: @user.id}
         else
-          render json: {error:"invalid username/password"},status: :unauthorized
+          render json: {message:"invalid username/password", status: 401, data: nil}
         end
       end
     end

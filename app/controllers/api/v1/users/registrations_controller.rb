@@ -4,14 +4,14 @@ module Api
       def create
         user = User.find_by(email: params[:user][:email])
         if user.present?
-          render json: {error: "User already exist with this email",status: 409}
+          render json: {message: "User already exist with this email",status: 409,data: nil}
         else
           user = User.new(signup_params)
           if (user.save)
             Sidekiq::Client.enqueue_to_in("default",Time.now, WelcomeMailWorker, user.email)
-            render json: {user: UserSerializer.new(user, root: false), message: "SuccessFully saved"}
+            render json: {user: UserSerializer.new(user, root: false), message: "SuccessFully saved",status: 200}
           else
-            render json: {error: "Error in saving data", data: user.errors}
+            render json: {error: user.errors, message: "not saved"}
           end
         end
       end
