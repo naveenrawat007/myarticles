@@ -27,6 +27,15 @@ module Api
         end
       end
 
+      def resend_otp
+        user = User.find_by(email:params[:email])
+        if user.present?
+          user.update(code: rand(100000...999999))
+          Sidekiq::Client.enqueue_to_in("default", Time.now, WelcomeMailWorker, user.email, user.code)
+          render json: {message: "Resend OTP to your email", status: 201}
+        end
+      end
+
       private
       def signup_params
         params.require(:user).permit(:email, :password, :name, :gender, :date_of_birth)

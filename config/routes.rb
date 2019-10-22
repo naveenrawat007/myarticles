@@ -7,6 +7,7 @@ Rails.application.routes.draw do
       devise_for :users, controllers: { registrations: "api/v1/users/registrations" , sessions: "api/v1/users/sessions"}
       devise_scope :user do
         post "/users/verify_otp" => "users/registrations#verify_otp"
+        post "/users/resend_otp" => "users/registrations#resend_otp"
       end
     end
   end
