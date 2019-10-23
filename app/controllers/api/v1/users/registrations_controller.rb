@@ -9,6 +9,7 @@ module Api
           user = User.new(signup_params)
           if (user.save)
             user.update(code: rand(100000...999999))
+            user.update(otp_expire: Time.now + 5.minutes)
             Sidekiq::Client.enqueue_to_in("default",Time.now, WelcomeMailWorker, user.email, user.code)
             render json: {user: UserSerializer.new(user, root: false), message: "SuccessFully saved",status: 201}
           else
@@ -19,11 +20,15 @@ module Api
 
       def verify_otp
         user = User.find_by(code:params[:code])
-        if (user!=nil)
-          user.update(active: true)
-          render json: {message: "OTP verified", data: user.id, status: 200}
+        if (user.present?)
+          if (user.otp_expire > Time.now)
+            user.update(active: true)
+            render json: {message: "OTP verified", data: user.id, status: 200}
+          else
+            render json: {message: "invalid OTP code/expired OTP code", status:404}
+          end
         else
-          render json: {message: "invalid OTP code/expired OTP code", status:404}
+          render json: {message: "Cannot find user", status: 404}
         end
       end
 
@@ -31,6 +36,7 @@ module Api
         user = User.find_by(email:params[:email])
         if user.present?
           user.update(code: rand(100000...999999))
+          user.update(otp_expire: Time.now + 5.minutes)
           Sidekiq::Client.enqueue_to_in("default", Time.now, WelcomeMailWorker, user.email, user.code)
           render json: {message: "Resend OTP to your email", status: 200, data: nil}
         end
@@ -62,6 +68,8 @@ module Api
         user = User.find(params[:user][:id])
         if user.update(signup_params)
           render json: {message: "SuccessFully Update data", status: 200, data: nil}
+        else
+          render json: {message: "n"}
         end
       end
 
