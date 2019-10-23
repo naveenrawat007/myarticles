@@ -10,7 +10,7 @@ Rails.application.routes.draw do
         post "/users/resend_otp" => "users/registrations#resend_otp"
         post "/users/forget_password" => "users/registrations#forget_password"
         put "/users/update_profile" => "users/registrations#update_profile"
-        put "/users/update_password" => "users/registrations#update_password"
+        put "/users/reset_forget_password" => "users/registrations#reset_forget_password"
       end
     end
   end

@@ -1,7 +1,7 @@
 module Api
   module V1
     class ArticlesController < MainController
-      before_action :authorize_request
+      before_action :authorize_request, except: [:create]
       def index
         @articles = Article.all;
         render json: @articles, each_serializer: ArticleSerializer,root: false
@@ -40,7 +40,7 @@ module Api
 
       private
       def article_params
-        params.require(:article).permit(:title, :body)
+        params.require(:article).permit(:title, :body,:person_id)
       end
     end
   end

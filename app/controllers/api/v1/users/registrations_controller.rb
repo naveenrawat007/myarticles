@@ -40,17 +40,21 @@ module Api
         user = User.find_by(email:params[:email])
         if user.present?
           Sidekiq::Client.enqueue_to_in("default", Time.now, ForgetpassWorker, user.email)
-          render json: {message: "forget_password link send to your email", status: 200}
+          render json: {message: "reset_password link send to your email", status: 200}
         end
       end
 
-      def update_password
+      def reset_forget_password
         user = User.find(params[:id])
-        if user.valid_password?(params[:old_password])
-          user.update(password: params[:new_password])
-          render json: {message: "SuccessFully update password", status: 200, data:nil}
+        if user.present?
+          if (params[:new_password] == params[:confirm_password])
+            user.update(password: params[:new_password])
+            render json: {message: "SuccessFully reset password", status: 200, data:nil}
+          else
+            render json: {message: "password mismatch", status: 401, data: nil}
+          end
         else
-          render json: {message: "Invalid email/password", status: 401, data: nil}
+          render json: {message: "Cannot find person", status: 401, data:nil}
         end
       end
 

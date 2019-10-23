@@ -1,7 +1,7 @@
 module Api
   module V1
     class PeopleController < MainController
-      before_action :authorize_request
+      before_action :authorize_request, except: [:create]
       def index
         @people = Person.all
         render json: @people, each_serializer: PersonSerializer,root: false
