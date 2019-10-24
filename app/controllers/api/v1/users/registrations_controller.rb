@@ -8,9 +8,12 @@ module Api
         else
           user = User.new(signup_params)
           if (user.save)
+            debugger
+            t = Time.new
+            otp_time = t.hour.to_s + ":" + t.min.to_s + ":"+ t.sec.to_s
             user.update(code: rand(100000...999999))
-            user.update(otp_expire: Time.now + 5.minutes)
-            Sidekiq::Client.enqueue_to_in("default",Time.now, WelcomeMailWorker, user.email, user.code)
+            user.update(otp_expire: otp_time)
+            # Sidekiq::Client.enqueue_to_in("default",Time.now, WelcomeMailWorker, user.email, user.code)
             render json: {user: UserSerializer.new(user, root: false), message: "SuccessFully saved",status: 201}
           else
             render json: { message: "User data not saved", status: 404}
@@ -21,7 +24,7 @@ module Api
       def verify_otp
         user = User.find_by(code:params[:code])
         if (user.present?)
-          if (user.otp_expire > Time.now)
+          if (user.otp_expire > Time.new)
             user.update(active: true)
             render json: {message: "OTP verified", data: user.id, status: 200}
           else
@@ -36,7 +39,7 @@ module Api
         user = User.find_by(email:params[:email])
         if user.present?
           user.update(code: rand(100000...999999))
-          user.update(otp_expire: Time.now + 5.minutes)
+          user.update(otp_expire: Time.new + 5.minutes)
           Sidekiq::Client.enqueue_to_in("default", Time.now, WelcomeMailWorker, user.email, user.code)
           render json: {message: "Resend OTP to your email", status: 200, data: nil}
         end
@@ -69,7 +72,7 @@ module Api
         if user.update(signup_params)
           render json: {message: "SuccessFully Update data", status: 200, data: nil}
         else
-          render json: {message: "n"}
+          render json: {message: "Data not updated"}
         end
       end
 

@@ -12,6 +12,9 @@ Rails.application.routes.draw do
         put "/users/update_profile" => "users/registrations#update_profile"
         put "/users/reset_forget_password" => "users/registrations#reset_forget_password"
       end
+
+      post "/get_articles" => "articles#find_articles_by_day"
+
     end
   end
 end
