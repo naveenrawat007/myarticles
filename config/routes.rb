@@ -15,7 +15,7 @@ Rails.application.routes.draw do
 
       post "/get_articles_by_date" => "articles#find_articles_by_date"
       post "/get_articles_by_month" => "articles#find_articles_by_month"
-
+      post "/get_articles_by_year" => "articles#find_articles_by_year"
     end
   end
 end
