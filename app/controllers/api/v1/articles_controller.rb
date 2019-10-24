@@ -1,7 +1,7 @@
 module Api
   module V1
     class ArticlesController < MainController
-      before_action :authorize_request, except: [:create, :find_articles_by_date]
+      before_action :authorize_request, except: [:create, :find_articles_by_date, :find_articles_by_month]
       def index
         @articles = Article.all;
         render json: @articles, each_serializer: ArticleSerializer,root: false
@@ -45,6 +45,16 @@ module Api
           render json: {message:"Articles for this day", data: @articles, status: 200}
         else
           render json: {message:"date not present", status:404, data:nil}
+        end
+      end
+
+      def find_articles_by_month
+        if params[:date].present?
+          date = ActiveSupport::TimeZone['New Delhi'].parse(params[:date])
+          @articles = Article.get_articles_by_month(date)
+          render json: {message: "Articles created in this month", status:200, data: @articles}
+        else
+          render json: {message: "date not present", status: 404, data: nil}
         end
       end
 
