@@ -40,7 +40,8 @@ module Api
 
       def find_articles_by_date
         if (params[:date].present?)
-          @articles = Article.get_articles_by_date(params[:date])
+          # @articles = Article.get_articles_by_date(params[:date])
+          @articles = Article.articles_by_date(params[:date])
           render json: {message:"Articles for this day", data: @articles, status: 200}
         else
           render json: {message:"date not present", status:404, data:nil}

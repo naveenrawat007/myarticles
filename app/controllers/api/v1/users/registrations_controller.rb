@@ -8,11 +8,8 @@ module Api
         else
           user = User.new(signup_params)
           if (user.save)
-            debugger
-            t = Time.new
-            otp_time = t.hour.to_s + ":" + t.min.to_s + ":"+ t.sec.to_s
             user.update(code: rand(100000...999999))
-            user.update(otp_expire: otp_time)
+            user.update(otp_expire: Time.now)
             # Sidekiq::Client.enqueue_to_in("default",Time.now, WelcomeMailWorker, user.email, user.code)
             render json: {user: UserSerializer.new(user, root: false), message: "SuccessFully saved",status: 201}
           else
