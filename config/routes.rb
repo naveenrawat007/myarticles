@@ -13,7 +13,7 @@ Rails.application.routes.draw do
         put "/users/reset_forget_password" => "users/registrations#reset_forget_password"
       end
 
-      post "/get_articles" => "articles#find_articles_by_day"
+      post "/get_articles" => "articles#find_articles_by_date"
 
     end
   end

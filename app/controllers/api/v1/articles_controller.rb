@@ -1,7 +1,7 @@
 module Api
   module V1
     class ArticlesController < MainController
-      before_action :authorize_request, except: [:create, :find_articles_by_day]
+      before_action :authorize_request, except: [:create, :find_articles_by_date]
       def index
         @articles = Article.all;
         render json: @articles, each_serializer: ArticleSerializer,root: false
@@ -38,9 +38,9 @@ module Api
         end
       end
 
-      def find_articles_by_day
+      def find_articles_by_date
         if (params[:date].present?)
-          @articles = Article.where("DATE(created_at)=?",params[:date])
+          @articles = Article.get_articles_by_date(params[:date])
           render json: {message:"Articles for this day", data: @articles, status: 200}
         else
           render json: {message:"date not present", status:404, data:nil}
@@ -49,7 +49,7 @@ module Api
 
       private
       def article_params
-        params.require(:article).permit(:title, :body,  :person_id)
+        params.require(:article).permit(:title, :body, :person_id)
       end
     end
   end
